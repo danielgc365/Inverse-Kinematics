@@ -60,16 +60,13 @@ Once Gazebo and rviz are up and running, make sure you see following in the gaze
 
 If any of these items are missing, report as an issue.
 
-Once all these items are confirmed, open rviz window, hit Next button.
+Once all these items are confirmed, open rviz window, hit Next button to continue with the simulation.
 
-## Inverse Kinematics analysis
-
-## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
+## Inverse Kinematics analysis 
 
 # Kinematic Analysis
 ### Building the Transform matrices 
-The first stp was to create a DH parameters table, the DH parameters table will help us in building the matrices to calculate the individual transforms between the links. The DH parameters table is shown below
+The first step was to create a DH parameters table, the DH parameters table will help us in building the matrices to calculate the individual transforms between the links. The DH parameters table is shown below:
 
 Joint | alpha | a | d | theta
 --- | --- | --- | --- | ---
@@ -81,22 +78,22 @@ Joint | alpha | a | d | theta
 6 | -pi/2 | 0 | 0 | 0
 Gripper | 0 | 0 | 0.303| 0
 
-Using this table we were able to construc the individual transform matrices, which are shown in lines 78 - 118 of the file **IK_server.py**. Using them we can calculate the total transform between the base link and the end which is denoted by the variable T0_7 and is calculated as shown below.
+Using this table we were able to construct the individual transform matrices, which are shown in lines 78 - 118 of the file **IK_server.py**. Using them we can calculate the total transform between the base link and the end-effector which is denoted by the variable T0_7 and is calculated as shown below.
 
 ```python
 T0_7 = ((((((T0_1 * T1_2) * T2_3) * T3_4) * T4_5) * T5_6) * T6_7)
 ```
-Note that it is a siple multiplication of the matrices going from each link from the base to the gripper (the end-effector)
+Note that it is a simple multiplication of the matrices going from each link from the base to the gripper (the end-effector)
 
-Also note that this matrices are calculated in a functions called `setupvariables()` they are then called on the function `IK_server` which is called whenevr the program runs. This is done increase performace as the program was building the transformation matrices every run of the main loop.
+Also note that this matrices are calculated in a functions called `setupvariables()` they are then called on the function `IK_server` which is called whenever the program runs. This is done to increase performance as the program was building the transformation matrices every run of the main loop.
 
 ## Calculating the joint angles
-An inverse kinematic problem can be divided into two, the first part is determining the postion of the end-effector this is done by simply calculating the angles for every joint **before** the wrist, and the orienation problem which is solver by calculating the angles for every joint **after** the wrist
+An inverse kinematic problem can be divided into two, the first part is determining the postion of the end-effector this is done by simply calculating the angles for every joint **before** the wrist, and the orientation problem which is solved by calculating the angles for every joint **after** the wrist
 
 The wrist was determined to be in link 3 as joints 4, 5 and 6 are what give the enf-effector its orientation.
 
 ### Inverse Position Kinematic Problem
-As mentioned before to solve for the position we would need to find the angles for joints 1, 2 and 3. Luckily the end-effector position and orientation are know. Given this parameters, teh calculation of the wrist center and its x,y and z coordinates becomes trivial, and all that must be done is perform the calculations shown below
+As mentioned before to solve for the position we would need to find the angles for joints 1, 2 and 3. Luckily the end-effector position and orientation are known. Given these parameters, teh calculation of the wrist center and its x,y and z coordinates becomes trivial, and all that must be done is perform the calculations shown below
 
 ```python
 px = req.poses[x].position.x
@@ -116,11 +113,11 @@ wy = (py - (d6 + d7) * Rrpy[1,0]).subs(s)
 wz = (pz - (d6 + d7) * Rrpy[2,0]).subs(s)
 ```
 
-Where Rrpy is calculation by performing a rotation matrix along each axis by the given roll, pitch and yawn angles, also `d6` is the length between the end-effector and link 3. Now that we know the wrist coordinates we can start calculating the angles.
+Where `Rrpy` is calculated by performing a rotation matrix along each axis by the given roll, pitch and yawn angles, and `d6` is the length between the end-effector and link 3. Now that we know the wrist coordinates we can start calculating the angles.
 
-The first angle to be calculated in theta 1 which as shown in the figure below is nothing more than the arctan of the y and x coordinates of the wrist.
+The first angle to be calculated is theta 1 which as shown in the figure below is nothing more than the arctan of the y and x coordinates of the wrist.
 
-Joint angles 2 and 3 are far trickier. To calculate the angle of joint 3 we have to acount for the extra angle caused by the second joint which creates and extra angle. However we can easily calculate the extra angle and the new x and z coordinates of the wrist using the equations below
+Joint angles 2 and 3 are far trickier. To calculate the angle of joint 3 we have to acount for the extra angle caused by the second joint which creates and extra angle. However, we can easily calculate the extra angle and the new x and z coordinates of the wrist using the equations below
 
 ```python
 xtraangle = atan2(wz-1.94645, wx)
@@ -160,11 +157,3 @@ However in the IK_server.py we use the code below from the tf library which calc
 ```python
 alpha, beta, gamma = tf.transformations.euler_from_matrix(np.array(R3_6).astype(np.float64), "ryzy")
 ```
-
-
-
-#### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
-
-And here's another image! 
-
-![alt text][image2]
