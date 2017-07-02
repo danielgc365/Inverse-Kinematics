@@ -3,6 +3,9 @@
 [image1]: ./misc_images/misc1.png
 [image2]: ./misc_images/misc2.png
 [image3]: ./misc_images/misc3.png
+[image4]: ./misc_images/image-1.png
+[image5]: ./misc_images/codecogseqn-3.gif
+[image6]: ./misc_images/codecogseqn-2.gif
 
 # Robotic arm - Pick & Place
 
@@ -146,8 +149,17 @@ To solve for the orientation of the end-effector we needto calculate the rotatio
 
 After we obtain this rotation we can apply the following formulas.
 
+![alt text][image4]
 
-However in the IK_server.py we use the tf library which calculate these formulas for us.
+![alt text][image5]
+
+![alt text][image6]
+
+However in the IK_server.py we use the code below from the tf library which calculate these formulas for us.
+
+```python
+alpha, beta, gamma = tf.transformations.euler_from_matrix(np.array(R3_6).astype(np.float64), "ryzy")
+```
 
 
 
