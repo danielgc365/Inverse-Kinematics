@@ -120,6 +120,7 @@ wz = (pz - (d6 + d7) * Rrpy[2,0]).subs(s)
 Where `Rrpy` is calculated by performing a rotation matrix along each axis by the given roll, pitch and yawn angles, and `d6` is the length between the end-effector and link 3. Now that we know the wrist coordinates we can start calculating the angles. To calculate the angles geometry was heavily used, to better understand how the angles were positioned the diagram below was used
 
 ![alt text][image7]
+
 Thanks to Guangwei Wang (gwwang in Slack) for this image.
 
 The first angle to be calculated is theta 1 which as shown in the figure below is nothing more than the arctan of the y and x coordinates of the wrist.
