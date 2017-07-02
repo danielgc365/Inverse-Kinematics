@@ -1,100 +1,51 @@
-# Robotic arm - Pick & Place project
+Project: Kinematics Pick & Place
 
-Make sure you are using robo-nd VM or have Ubuntu+ROS installed locally.
+Writeup Template: You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
 
-### One time Gazebo setup step:
-Check the version of gazebo installed on your system using a terminal:
-```sh
-$ gazebo --version
-```
-To run projects from this repository you need version 7.7.0+
-If your gazebo version is not 7.7.0+, perform the update as follows:
-```sh
-$ sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
-$ wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
-$ sudo apt-get update
-$ sudo apt-get install gazebo7
-```
+Steps to complete the project:
 
-Once again check if the correct version was installed:
-```sh
-$ gazebo --version
-```
-### For the rest of this setup, catkin_ws is the name of active ROS Workspace, if your workspace name is different, change the commands accordingly
+Set up your ROS Workspace.
+Download or clone the project repository into the src directory of your ROS Workspace.
+Experiment with the forward_kinematics environment and get familiar with the robot.
+Launch in demo mode.
+Perform Kinematic Analysis for the robot following the project rubric.
+Fill in the IK_server.py with your Inverse Kinematics code.
+Rubric Points
 
-If you do not have an active ROS workspace, you can create one by:
-```sh
-$ mkdir -p ~/catkin_ws/src
-$ cd ~/catkin_ws/
-$ catkin_make
-```
+Here I will consider the rubric points individually and describe how I addressed each point in my implementation.
 
-Now that you have a workspace, clone or download this repo into the **src** directory of your workspace:
-```sh
-$ cd ~/catkin_ws/src
-$ git clone https://github.com/udacity/RoboND-Kinematics-Project.git
-```
+Writeup / README
 
-Now from a terminal window:
+1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf.
 
-```sh
-$ cd ~/catkin_ws
-$ rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
-$ cd ~/catkin_ws/src/RoboND-Kinematics-Project/kuka_arm/scripts
-$ sudo chmod +x target_spawn.py
-$ sudo chmod +x IK_server.py
-$ sudo chmod +x safe_spawner.sh
-```
-Build the project:
-```sh
-$ cd ~/catkin_ws
-$ catkin_make
-```
+You're reading it!
 
-Add following to your .bashrc file
-```
-export GAZEBO_MODEL_PATH=~/catkin_ws/src/RoboND-Kinematics-Project/kuka_arm/models
+Kinematic Analysis
 
-source ~/catkin_ws/devel/setup.bash
-```
+1. Run the forward_kinematics demo and evaluate the kr210.urdf.xacro file to perform kinematic analysis of Kuka KR210 robot and derive its DH parameters.
 
-For demo mode make sure the **demo** flag is set to _"true"_ in `inverse_kinematics.launch` file under /RoboND-Kinematics-Project/kuka_arm/launch
+Here is an example of how to include an image in your writeup.
 
-In addition, you can also control the spawn location of the target object in the shelf. To do this, modify the **spawn_location** argument in `target_description.launch` file under /RoboND-Kinematics-Project/kuka_arm/launch. 0-9 are valid values for spawn_location with 0 being random mode.
+alt text
 
-You can launch the project by
-```sh
-$ cd ~/catkin_ws/src/RoboND-Kinematics-Project/kuka_arm/scripts
-$ ./safe_spawner.sh
-```
+2. Using the DH parameter table you derived earlier, create individual transformation matrices about each joint. In addition, also generate a generalized homogeneous transform between base_link and gripper_link using only end-effector(gripper) pose.
 
-If you are running in demo mode, this is all you need. To run your own Inverse Kinematics code change the **demo** flag described above to _"false"_ and run your code (once the project has successfully loaded) by:
-```sh
-$ cd ~/catkin_ws/src/RoboND-Kinematics-Project/kuka_arm/scripts
-$ rosrun kuka_arm IK_server.py
-```
-Once Gazebo and rviz are up and running, make sure you see following in the gazebo world:
+Here's	A	Snappy	Table
+1	highlight	bold	7.41
+2	a	b	c
+3	italic	text	403
+4	2	3	abcd
+3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
-	- Robot
-	
-	- Shelf
-	
-	- Blue cylindrical target in one of the shelves
-	
-	- Dropbox right next to the robot
-	
+And here's another image!
 
-If any of these items are missing, report as an issue.
+alt text
 
-Once all these items are confirmed, open rviz window, hit Next button.
+Project Implementation
 
-To view the complete demo keep hitting Next after previous action is completed successfully. 
+1. Fill in the IK_server.py file with properly commented python code for calculating Inverse Kinematics based on previously performed Kinematic Analysis. Your code must guide the robot to successfully complete 8/10 pick and place cycles. Briefly discuss the code you implemented and your results.
 
-Since debugging is enabled, you should be able to see diagnostic output on various terminals that have popped up.
+Here I'll talk about the code, what techniques I used, what worked and why, where the implementation might fail and how I might improve it if I were going to pursue this project further.
 
-The demo ends when the robot arm reaches at the top of the drop location. 
-
-There is no loopback implemented yet, so you need to close all the terminal windows in order to restart.
-
-In case the demo fails, close all three terminal windows and rerun the script.
+And just for fun, another example image: alt text
 
