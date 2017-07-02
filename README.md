@@ -6,6 +6,8 @@
 [image4]: ./misc_images/image-1.png
 [image5]: ./misc_images/codecogseqn-3.gif
 [image6]: ./misc_images/codecogseqn-2.gif
+[image7]: ./misc_images/pasted_image_at_2017_07_02_10_21_pm.png
+[image8]: ./misc_images/imageedit_2_8171765159.jpg
 
 # Robotic arm - Pick & Place
 
@@ -66,7 +68,7 @@ Once all these items are confirmed, open rviz window, hit Next button to continu
 
 # Kinematic Analysis
 ### Building the Transform matrices 
-The first step was to create a DH parameters table, the DH parameters table will help us in building the matrices to calculate the individual transforms between the links. The DH parameters table is shown below:
+The first step was to create a DH parameters table, the DH parameters table will help us in building the matrices to calculate the individual transforms between the links. The DH parameters table is shown below, the diagram used to calculate the DH paramters is shown below the table:
 
 Joint | alpha | a | d | theta
 --- | --- | --- | --- | ---
@@ -77,6 +79,8 @@ Joint | alpha | a | d | theta
 5 | pi/2 | 0 | 0 | 0
 6 | -pi/2 | 0 | 0 | 0
 Gripper | 0 | 0 | 0.303| 0
+
+![alt text][image8]
 
 Using this table we were able to construct the individual transform matrices, which are shown in lines 78 - 118 of the file **IK_server.py**. Using them we can calculate the total transform between the base link and the end-effector which is denoted by the variable T0_7 and is calculated as shown below.
 
@@ -113,7 +117,9 @@ wy = (py - (d6 + d7) * Rrpy[1,0]).subs(s)
 wz = (pz - (d6 + d7) * Rrpy[2,0]).subs(s)
 ```
 
-Where `Rrpy` is calculated by performing a rotation matrix along each axis by the given roll, pitch and yawn angles, and `d6` is the length between the end-effector and link 3. Now that we know the wrist coordinates we can start calculating the angles.
+Where `Rrpy` is calculated by performing a rotation matrix along each axis by the given roll, pitch and yawn angles, and `d6` is the length between the end-effector and link 3. Now that we know the wrist coordinates we can start calculating the angles. To calculate the angles geometry was heavily used, to better understand how the angles were positioned the diagram below was used
+
+![alt text][image7]
 
 The first angle to be calculated is theta 1 which as shown in the figure below is nothing more than the arctan of the y and x coordinates of the wrist.
 
