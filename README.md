@@ -83,51 +83,7 @@ Gripper | 0 | 0 | 0.303| 0
 
 ![alt text][image8]
 
-Using this table we were able to construct the individual transform matrices, which are shown below:
-
-**T0_1=** Matrix([   
-[cos(q1), -sin(q1), 0,    0],  
-[sin(q1),  cos(q1), 0,    0],  
-[      0,        0, 1, 0.75],  
-[      0,        0, 0,    1]])
-
-**T1_2=** Matrix([    
-[sin(q2),  cos(q2), 0, 0.35],  
-[      0,        0, 1,    0],  
-[cos(q2), -sin(q2), 0,    0],  
-[      0,        0, 0,    1]])  
-
-**T2_3=** Matrix([  
-[cos(q3), -sin(q3), 0, 1.25],  
-[sin(q3),  cos(q3), 0,    0],  
-[      0,        0, 1,    0],  
-[      0,        0, 0,    1]])  
-
-**T3_4=** Matrix([  
-[ cos(q4), -sin(q4), 0, -0.054],  
-[       0,        0, 1,    1.5],  
-[-sin(q4), -cos(q4), 0,      0],  
-[       0,        0, 0,      1]])  
-
-**T4_5=** Matrix([  
-[cos(q5), -sin(q5),  0, 0],  
-[      0,        0, -1, 0],  
-[sin(q5),  cos(q5),  0, 0],  
-[      0,        0,  0, 1]])  
-
-**T5_6=** Matrix([  
-[ cos(q6), -sin(q6), 0, 0],  
-[       0,        0, 1, 0],  
-[-sin(q6), -cos(q6), 0, 0],  
-[       0,        0, 0, 1]])  
-
-**T6_7=** Matrix([  
-[1, 0, 0,     0],  
-[0, 1, 0,     0],  
-[0, 0, 1, 0.303],  
-[0, 0, 0,     1]])  
-
-Then, using them we can calculate the total transform between the base link and the end-effector which is denoted by the variable T0_7 and is shown below.
+Using this table we were able to construct the individual transform matrices. Then, using them we can calculate the total transform between the base link and the end-effector which is denoted by the variable T0_7 and its calculation is shown below.
 
 ```python
 T0_7 = ((((((T0_1 * T1_2) * T2_3) * T3_4) * T4_5) * T5_6) * T6_7)
